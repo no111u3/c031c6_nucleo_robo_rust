@@ -1,0 +1,34 @@
+[package]
+name = "c031c6_nucleo_robo_rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cortex-m = { version = "0.7.7", features=["critical-section-single-core"] }
+cortex-m-rt = "0.7.1"
+cortex-m-rtic = "1.0.0"
+cortex-m-semihosting = "0.3.7"
+panic-halt = "0.2.0"
+panic-semihosting = "0.5.6"
+
+[dependencies.stm32c0]
+git = "https://github.com/stm32-rs/stm32-rs-nightlies"
+features = ["rt", "stm32c031"]
+
+[dependencies.stm32c0xx-hal]
+git = "https://github.com/stm32-rs/stm32c0xx-hal"
+features = ["rt", "stm32c031"]
+
+[profile.dev]
+codegen-units = 1
+debug = true
+incremental = false
+lto = false
+
+[profile.release]
+debug = false
+codegen-units = 1
+incremental = false
+lto = true
