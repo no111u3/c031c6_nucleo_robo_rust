@@ -18,7 +18,7 @@ enabled = true
 halt_afterwards = false
 
 [default.general]
-chip = "stm32c031c6"
+chip = "stm32c031c6tx"
 chip_descriptions = []
 log_level = "WARN"
 
