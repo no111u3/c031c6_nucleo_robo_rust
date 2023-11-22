@@ -11,6 +11,7 @@ use hal::prelude::*;
 use hal::spi::*;
 use hal::stm32;
 use hal::timer::*;
+use hal::serial::*;
 use hal::analog::adc::{self, Adc};
 
 use ssd1306::{mode, prelude::*, Ssd1306};
@@ -133,6 +134,7 @@ mod app {
         ui: UI,
         ui_timer: Timer<stm32::TIM17>,
         pot_input: PA0<DefaultMode>,
+        serial: Serial<stm32::USART2>,
     }
 
     #[init]
@@ -151,7 +153,7 @@ mod app {
         rst.set_high().ok();
 
         let mut ui_timer = ctx.device.TIM17.timer(&mut rcc);
-        ui_timer.start(350.millis());
+        ui_timer.start(100.millis());
         ui_timer.listen();
 
         let mut adc = ctx.device.ADC.constrain(&mut rcc);
@@ -171,6 +173,13 @@ mod app {
             &mut rcc,
         );
 
+        let mut serial = ctx.device
+            .USART2
+            .usart((gpio_a.pa2, gpio_a.pa3), Config::default(), &mut rcc)
+            .unwrap();
+
+        writeln!(serial, "Hello from STM32C031\r\n").unwrap();
+
         let interface = display_interface_spi::SPIInterface::new(spi, dc, nss);
         let mut display = Ssd1306::new(interface, DisplaySize128x64, DisplayRotation::Rotate0);
 
@@ -179,8 +188,8 @@ mod app {
 
         let mut delay = ctx.device.TIM3.delay(&mut rcc);
         display.reset(&mut rst, &mut delay).unwrap();
-
         display.init().unwrap();
+        display.clear().unwrap();
         let controller = DisplayController::new(display);
         let display = SpriteDisplay::new(controller, SPRITES);
         let ui = UI::new();
@@ -195,21 +204,24 @@ mod app {
                 ui,
                 ui_timer,
                 pot_input,
+                serial
             },
             init::Monotonics(),
         )
     }
 
-    #[task(binds = TIM17, local = [adc, ui, ui_timer, display, pot_input], shared = [app])]
+    #[task(binds = TIM17, local = [adc, ui, ui_timer, display, pot_input, serial], shared = [app])]
     fn ui_timer_tick(ctx: ui_timer_tick::Context) {
         let mut app = ctx.shared.app;
         let pot_raw: u16 = ctx.local.adc.read(ctx.local.pot_input).unwrap_or(0);
         let pot_mv: u16 = ctx.local.adc.read_voltage(ctx.local.pot_input).unwrap_or(0);
+        write!(ctx.local.serial, "{} {}\r\n", pot_raw << 4, pot_mv).unwrap();
         app.lock(|app| {
-            app.update(pot_raw, pot_mv);
+            app.update(pot_raw, pot_mv >> 4);
             ctx.local.ui.update(app.state());
         });
         ctx.local.ui.render(ctx.local.display);
+        ctx.local.ui_timer.clear_irq();
     }
 
     #[idle]
