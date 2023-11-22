@@ -180,7 +180,7 @@ mod app {
 
         writeln!(serial, "Hello from STM32C031\r\n").unwrap();
 
-        let interface = display_interface_spi::SPIInterface::new(spi, dc, nss);
+        let interface = SPIInterface::new(spi, dc, nss);
         let mut display = Ssd1306::new(interface, DisplaySize128x64, DisplayRotation::Rotate0);
 
         let pot_input = gpio_a.pa0;
