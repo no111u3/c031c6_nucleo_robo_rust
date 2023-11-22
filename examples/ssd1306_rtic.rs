@@ -6,8 +6,8 @@ use stm32c0xx_hal as hal;
 
 use hal::gpio::*;
 use hal::prelude::*;
-use hal::stm32;
 use hal::spi;
+use hal::stm32;
 
 use ssd1306::{prelude::*, Ssd1306};
 
@@ -72,13 +72,7 @@ mod app {
 
         display.flush().unwrap();
 
-        (
-            Shared {
-            },
-            Local {
-            },
-            init::Monotonics(),
-        )
+        (Shared {}, Local {}, init::Monotonics())
     }
 
     #[idle]

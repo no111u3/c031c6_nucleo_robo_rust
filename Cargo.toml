@@ -15,6 +15,7 @@ panic-semihosting = "0.5.6"
 ssd1306 = "0.8.4"
 display-interface-spi = "0.4.1"
 embedded-graphics = "0.8.1"
+klaptik = { version = "0.2.1", features = ["ssd1306"] }
 
 [dependencies.stm32c0]
 git = "https://github.com/stm32-rs/stm32-rs-nightlies"
@@ -29,9 +30,11 @@ codegen-units = 1
 debug = true
 incremental = false
 lto = false
+opt-level = 2
 
 [profile.release]
 debug = false
 codegen-units = 1
 incremental = false
 lto = true
+opt-level = "z"
