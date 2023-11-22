@@ -153,7 +153,7 @@ mod app {
         rst.set_high().ok();
 
         let mut ui_timer = ctx.device.TIM17.timer(&mut rcc);
-        ui_timer.start(100.millis());
+        ui_timer.start(200.millis());
         ui_timer.listen();
 
         let mut adc = ctx.device.ADC.constrain(&mut rcc);
@@ -215,9 +215,9 @@ mod app {
         let mut app = ctx.shared.app;
         let pot_raw: u16 = ctx.local.adc.read(ctx.local.pot_input).unwrap_or(0);
         let pot_mv: u16 = ctx.local.adc.read_voltage(ctx.local.pot_input).unwrap_or(0);
-        write!(ctx.local.serial, "{} {}\r\n", pot_raw << 4, pot_mv).unwrap();
+        write!(ctx.local.serial, "{} {}\r\n", pot_raw, pot_mv).unwrap();
         app.lock(|app| {
-            app.update(pot_raw, pot_mv >> 4);
+            app.update(pot_raw, pot_mv);
             ctx.local.ui.update(app.state());
         });
         ctx.local.ui.render(ctx.local.display);
