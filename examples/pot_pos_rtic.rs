@@ -179,7 +179,7 @@ mod app {
         rst.set_high().ok();
 
         let mut ui_timer = ctx.device.TIM17.timer(&mut rcc);
-        ui_timer.start(200.millis());
+        ui_timer.start(50.millis());
         ui_timer.listen();
 
         let mut adc = ctx.device.ADC.constrain(&mut rcc);
