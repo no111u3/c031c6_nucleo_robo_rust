@@ -6,13 +6,13 @@ use core::fmt::Write;
 use panic_semihosting as _;
 use stm32c0xx_hal as hal;
 
+use hal::analog::adc::{self, Adc};
 use hal::gpio::*;
 use hal::prelude::*;
+use hal::serial::*;
 use hal::spi::*;
 use hal::stm32;
 use hal::timer::*;
-use hal::serial::*;
-use hal::analog::adc::{self, Adc};
 
 use ssd1306::{mode, prelude::*, Ssd1306};
 
@@ -173,7 +173,8 @@ mod app {
             &mut rcc,
         );
 
-        let mut serial = ctx.device
+        let mut serial = ctx
+            .device
             .USART2
             .usart((gpio_a.pa2, gpio_a.pa3), Config::default(), &mut rcc)
             .unwrap();
@@ -204,7 +205,7 @@ mod app {
                 ui,
                 ui_timer,
                 pot_input,
-                serial
+                serial,
             },
             init::Monotonics(),
         )
