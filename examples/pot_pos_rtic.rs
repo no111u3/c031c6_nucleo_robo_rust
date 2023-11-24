@@ -6,6 +6,9 @@ use core::fmt::Write;
 use panic_semihosting as _;
 use stm32c0xx_hal as hal;
 
+use defmt_rtt as _;
+use defmt::info;
+
 use hal::analog::adc::{self, Adc};
 use hal::gpio::*;
 use hal::prelude::*;
@@ -222,6 +225,8 @@ mod app {
         let ui = UI::new();
 
         let app = App::new();
+
+        info!("App initialized");
 
         (
             Shared { app },
