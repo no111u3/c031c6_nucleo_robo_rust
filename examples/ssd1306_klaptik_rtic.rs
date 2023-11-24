@@ -62,7 +62,7 @@ pub const SPRITES: [(FlashSprite, Glyphs); 1] = [(
         Asset::Background as _,
         1,
         Size::new(128, 64),
-        include_bytes!("background.bin"),
+        include_bytes!("assets/background.bin"),
     ),
     Glyphs::Sequential(1),
 )];
