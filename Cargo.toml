@@ -21,6 +21,8 @@ rtt-target = { version = "0.4.0" }
 defmt-rtt = { version = "0.4.0" }
 defmt = { version = "0.3.2" }
 
+dyadic = "0.0.8"
+
 [dependencies.stm32c0]
 git = "https://github.com/stm32-rs/stm32-rs-nightlies"
 features = ["rt", "stm32c031"]
