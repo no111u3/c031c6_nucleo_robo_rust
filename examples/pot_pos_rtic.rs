@@ -6,8 +6,8 @@ use core::fmt::Write;
 use panic_semihosting as _;
 use stm32c0xx_hal as hal;
 
-use defmt_rtt as _;
 use defmt::info;
+use defmt_rtt as _;
 
 use hal::analog::adc::{self, Adc};
 use hal::gpio::*;
