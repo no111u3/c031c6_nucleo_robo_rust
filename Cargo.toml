@@ -16,12 +16,14 @@ ssd1306 = "0.8.4"
 display-interface-spi = "0.4.1"
 embedded-graphics = "0.8.1"
 klaptik = { version = "0.2.1", features = ["ssd1306"] }
-
+# rtt
 rtt-target = { version = "0.4.0" }
 defmt-rtt = { version = "0.4.0" }
 defmt = { version = "0.3.2" }
-
+# fix point
 dyadic = "0.0.8"
+# console
+ushell = "0.3.5"
 
 [dependencies.stm32c0]
 git = "https://github.com/stm32-rs/stm32-rs-nightlies"
